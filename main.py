@@ -10,7 +10,7 @@ import sys
 class Slide:
     def __init__(self,filename):
         self.bgr = cv2.imread(filename)
-        self.gray = cv2.imread(filename, 0) #performance drop?
+        self.gray = cv2.imread(filename, 0)
     def mask(self, hl,hh,sl,sh,vl,vh): # hsv theshold parameters
         hsv = cv2.cvtColor(self.bgr, cv2.COLOR_BGR2HSV)
         lower_bound = np.array([hl,sl,vl],dtype=np.uint8)
@@ -98,14 +98,12 @@ def colocalization(contoursA, contoursB, minDist): #proportion of distances betw
     return underMin/len(correctedDistance)
 
 if __name__ == "__main__":
-    start = time.time()
-    ratioPx2um = sys.argv[1] #pixels to um
-    cellSizePx = ratioPx2um * 7 # approx cell size in um
-    prefix = sys.argv[2]
-    path = '.'
-    filenames = os.listdir(path)
-    for filename in filenames:
-        if filename.startswith(prefix):
-        #enter command to be implemented
-            break
-    print('It took', time.time()-start, 'seconds.')
+    path = "./" + argv[1]
+    files = [str(filename) for filename in os.listdir(path)]
+    count = []
+    for filename in os.listdir(path):
+        if filename.endswith("png"):
+            a = Slide("./images/" + filename)
+            a.dab()
+            b = Contour(a.dab(),filename)
+            print("cells counted for file " + filename + " = " + str(b.cellCount()))
