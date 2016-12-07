@@ -10,5 +10,8 @@ However, these instructions are to be followed once tests are available:
 `> pip install pytest # use the installation manager of your choosing`
 `> python -m pytest -v test.py`
 
+## Dataset
+A new, unrestricted dataset is now included (source: https://imagej.nih.gov/ij/plugins/ihc-toolbox/index.html). The dataset originally used to calibrate this program is not available for reasons relating to patient privacy.
+
 ## Current State
 While this code is currently under-documented, incomplete, and packaged without tests, I hope to at some point in the future salvage the contents for open distribution. Please contact me by email if you are interested in such a tool.

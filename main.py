@@ -98,7 +98,11 @@ def colocalization(contoursA, contoursB, minDist): #proportion of distances betw
     return underMin/len(correctedDistance)
 
 if __name__ == "__main__":
-    path = "./" + argv[1]
+    if len(sys.argv) > 1:
+        path = "./" + sys.argv[1]
+    else:
+        print("A directory must be specified. Using current working directory as default")
+        path = "."
     files = [str(filename) for filename in os.listdir(path)]
     count = []
     for filename in os.listdir(path):
