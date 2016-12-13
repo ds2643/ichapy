@@ -1,7 +1,10 @@
 # automatically generated pytest template with ttpy 
-def test___init__():
+
+TEST_IMAGE_PATH = "data/cluster1.bmp"
+
+def test_Slide__init__():
     """testing: __init__"""
-    # TODO: write test...
+    
     assert (false)
 
 def test_mask():
