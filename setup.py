@@ -6,7 +6,6 @@ def get_requirements(suffix=''):
         result = f.read().splitlines()
     return result
 
-
 def get_long_description():
     with open('README.md') as f:
         result = f.read()

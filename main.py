@@ -101,8 +101,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         path = "./" + sys.argv[1]
     else:
-        print("A directory must be specified. Using current working directory as default")
-        path = "."
+        print("A directory must be specified. Using provided data as default")
+        path = "./data"
     files = [str(filename) for filename in os.listdir(path)]
     count = []
     for filename in os.listdir(path):
