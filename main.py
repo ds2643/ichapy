@@ -6,8 +6,6 @@ import csv # TODO not in use; incorperate csv output functionality
 import sys
 import imageprocessing as ip
 
-# TODO add feature for conversion to png format
-
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         path = "./" + sys.argv[1]
