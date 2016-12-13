@@ -7,7 +7,9 @@ The contents of this repository reflect a subset of tools salvaged from prior us
 ## Tests
 **Automated tests are not yet implemented.**
 However, these instructions are to be followed once tests are available:
+
 `> pip install pytest # use the installation manager of your choosing`
+
 `> python -m pytest -v test.py`
 
 ## Dataset
