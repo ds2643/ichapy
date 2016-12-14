@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 
 class Slide:
+    # TODO: rename class more appropriately
     ''' data pipeline created from raw image data; provides mechanism for extracting primitive features of image (e.g., spatially intact representation of those pixels falling within some specified color threshold) '''
 
     def __init__(self, filename):
@@ -45,8 +46,8 @@ class Slide:
             "vl": 65,
             "vh": 240}
 
-    def generate_mask(self, mask): # hsv theshold parameters
-        ''' returns a representation of the image thresholded for some specified hsv color range indicated by mask argument '''
+    def generate_mask(self, mask):
+        ''' returns a representation of the image thresholded for some specified hsv color range indicated by mask argument... mask is a dictionary containing entries for hue lower bound ("hl"), hue upper bound, saturation upper and lower bound, and volume upper and lower bound consistant with the desired threshold '''
         hsv = cv2.cvtColor(self.bgr, cv2.COLOR_BGR2HSV)
         hsv_lower_values = [mask["hl"], mask["sl"], mask["vl"]]
         lower_bound = np.array(hsv_lower_values, dtype=np.uint8)
@@ -54,20 +55,21 @@ class Slide:
         upper_bound = np.array(hsv_upper_values, dtype=np.uint8)
         return cv2.inRange(hsv, lower_bound, upper_bound)
 
-    def custom_pigment(self, mask):
+    def extract_custom_pigment(self, mask):
         ''' returns matrix representation of image including only those pixels that fall in the color range specified by the mask HSV threshold specification '''
         assert(isinstance(mask, dict))
-        # TODO: assert mask adheres to the conventions used for AP_MASK_VALUES and DAB_MASK_VALUES
+        assert("hl" in mask and "sl" in mask and "vl" in mask)
+        assert("hh" in mask and "sh" in mask and "vh" in mask)
         custom_mask = self.generate_mask(mask)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = custom_mask)
 
     def dab(self):
-        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab pigment '''
+        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab pigment... less general version of extract_custom_pigment method '''
         dab_mask = self.generate_mask(self.DAB_MASK_VALUES)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = dab_mask)
 
     def ap(self):
-        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for ap pigment '''
+        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for ap pigment... less general version of extract_custom_pigment method '''
         ap_mask = self.generate_mask(self.AP_MASK_VALUES)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = ap_mask)
 
@@ -75,7 +77,6 @@ class Slide:
         ''' return integer count of pixels that fall in the threshold of the dab pigment '''
         # TODO rename as count_dab_pixels
         return cv2.countNonZero(self.generate_mask(self.DAB_MASK_VALUES))
-
 
     def apPixelRaw(self):
         ''' return integer count of pixels that fall in the threshold of the ap pigment '''
