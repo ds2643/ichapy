@@ -5,8 +5,6 @@ import math
 import cv2
 import numpy as np
 
-# TODO trace data through pipeline
-
 class Slide:
     ''' data pipeline created from raw image data; provides mechanism for extracting primitive features of image (e.g., spatially intact representation of those pixels falling within some specified color threshold) '''
 
@@ -56,6 +54,13 @@ class Slide:
         upper_bound = np.array(hsv_upper_values, dtype=np.uint8)
         return cv2.inRange(hsv, lower_bound, upper_bound)
 
+    def custom_pigment(self, mask):
+        ''' returns matrix representation of image including only those pixels that fall in the color range specified by the mask HSV threshold specification '''
+        assert(isinstance(mask, dict))
+        # TODO: assert mask adheres to the conventions used for AP_MASK_VALUES and DAB_MASK_VALUES
+        custom_mask = self.generate_mask(mask)
+        return cv2.bitwise_and(self.bgr, self.bgr, mask = custom_mask)
+
     def dab(self):
         ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab pigment '''
         dab_mask = self.generate_mask(self.DAB_MASK_VALUES)
@@ -66,22 +71,16 @@ class Slide:
         ap_mask = self.generate_mask(self.AP_MASK_VALUES)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = ap_mask)
 
-    def custom_pigment(self, mask):
-        ''' returns matrix representation of image including only those pixels that fall in the color range specified by the mask HSV threshold specification '''
-        assert(isinstance(mask,dict))
-        # TODO: assert mask adheres to the conventions used for AP_MASK_VALUES and DAB_MASK_VALUES
-        custom_mask = self.generate_mask(mask)
-        return cv2.bitwise_and(self.bgr, self.bgr, mask = custom_mask)
+    def dabPixelRaw(self):
+        ''' return integer count of pixels that fall in the threshold of the dab pigment '''
+        # TODO rename as count_dab_pixels
+        return cv2.countNonZero(self.generate_mask(self.DAB_MASK_VALUES))
+
 
     def apPixelRaw(self):
-        # TODO: initialize with a dictionary specifying desired color threshold?
+        ''' return integer count of pixels that fall in the threshold of the ap pigment '''
         # TODO: rename as count_ap_pixels
-        return cv2.countNonZero(self.generate_mask(150,185, 40,220, 65,240))
-
-    def dabPixelRaw(self):
-        # TODO retrofit with new input method (mask parameter)
-        # TODO rename as count_dab_pixels
-        return cv2.countNonZero(self.generate_mask(3,20, 60,180, 25,250))
+        return cv2.countNonZero(self.generate_mask(self.AP_MASK_VALUES))
 
     def background(self): # TODO fix erosion bounds
         kernel = np.ones((4,4),np.uint8)

@@ -16,17 +16,8 @@ def test_generate_mask():
     assert False
 
 def test_custom_pigment():
+    ''' testing: custom_pigment (in place of dab and ap methods, which use the same logic, but use default arguments) '''
     # TODO: write test...
-    assert False
-
-def test_dab():
-    # TODO: write test...
-    example_slide = ip.Slide(TEST_IMAGE_PATH_1)
-    assert False
-
-def test_ap():
-    # TODO: write test...
-    example_slide = ip.Slide(TEST_IMAGE_PATH_1)
     assert False
 
 # TODO: complete the following after refactoring is complete
