@@ -47,8 +47,12 @@ class Slide:
             "vh": 240}
 
     def generate_mask(self, mask):
+        # TODO: must pass tests
         ''' returns a representation of the image thresholded for some specified hsv color range indicated by mask argument... mask is a dictionary containing entries for hue lower bound ("hl"), hue upper bound, saturation upper and lower bound, and volume upper and lower bound consistant with the desired threshold '''
         hsv = cv2.cvtColor(self.bgr, cv2.COLOR_BGR2HSV)
+        assert(isinstance(mask, dict))
+        assert("hl" in mask and "sl" in mask and "vl" in mask)
+        assert("hh" in mask and "sh" in mask and "vh" in mask)
         hsv_lower_values = [mask["hl"], mask["sl"], mask["vl"]]
         lower_bound = np.array(hsv_lower_values, dtype=np.uint8)
         hsv_upper_values = [mask["hh"], mask["sh"], mask["vh"]]

@@ -12,7 +12,6 @@ def test_Slide__init__():
 def test_generate_mask():
     ''' testing: given the appropriate HSV bounds, generate_mask produces a mask for which some values are not null '''
     red_mask = {
-            ''' threshold set liberally for red '''
             "hl": 0,
             "hh": 100,
             "sl": 50,
@@ -27,7 +26,6 @@ def test_extract_custom_pigment():
     ''' testing: extract_custom_pigment (in place of dab and ap methods, which use the same logic, but use default arguments)... resultant filtered image for custom pigment  '''
     example_slide = ip.Slide(TEST_IMAGE_PATH_0)
     red_mask = {
-            ''' threshold set liberally for red '''
             "hl": 0,
             "hh": 100,
             "sl": 50,
@@ -40,6 +38,7 @@ def test_extract_custom_pigment():
 
 # TODO: complete the following after refactoring is complete
 
+'''
 def test_apPixelRaw():
     # TODO: write test...
     example_slide = ip.Slide(TEST_IMAGE_PATH_1)
@@ -82,3 +81,4 @@ def test_distanceInClass():
 def test_colocalization():
     # TODO: write test...
     assert False
+'''
