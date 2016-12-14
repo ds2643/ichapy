@@ -46,6 +46,7 @@ class Slide:
             "sh": 220,
             "vl": 65,
             "vh": 240}
+
     def generate_mask(self, mask): # hsv theshold parameters
         ''' returns a representation of the image thresholded for some specified hsv color range indicated by mask argument '''
         hsv = cv2.cvtColor(self.bgr, cv2.COLOR_BGR2HSV)
@@ -56,14 +57,21 @@ class Slide:
         return cv2.inRange(hsv, lower_bound, upper_bound)
 
     def dab(self):
-        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab'''
+        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab pigment '''
         dab_mask = self.generate_mask(self.DAB_MASK_VALUES)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = dab_mask)
 
     def ap(self):
-        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab '''
+        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for ap pigment '''
         ap_mask = self.generate_mask(self.AP_MASK_VALUES)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = ap_mask)
+
+    def custom_pigment(self, mask):
+        ''' returns matrix representation of image including only those pixels that fall in the color range specified by the mask HSV threshold specification '''
+        assert(isinstance(mask,dict))
+        # TODO: assert mask adheres to the conventions used for AP_MASK_VALUES and DAB_MASK_VALUES
+        custom_mask = self.generate_mask(mask)
+        return cv2.bitwise_and(self.bgr, self.bgr, mask = custom_mask)
 
     def apPixelRaw(self):
         # TODO: initialize with a dictionary specifying desired color threshold?

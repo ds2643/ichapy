@@ -15,7 +15,10 @@ def test_generate_mask():
     example_slide = ip.Slide(TEST_IMAGE_PATH_1)
     assert False
 
-# TODO: complete the following after refactoring is complete
+def test_custom_pigment():
+    # TODO: write test...
+    assert False
+
 def test_dab():
     # TODO: write test...
     example_slide = ip.Slide(TEST_IMAGE_PATH_1)
@@ -26,7 +29,9 @@ def test_ap():
     example_slide = ip.Slide(TEST_IMAGE_PATH_1)
     assert False
 
-def tst_apPixelRaw():
+# TODO: complete the following after refactoring is complete
+
+def test_apPixelRaw():
     # TODO: write test...
     example_slide = ip.Slide(TEST_IMAGE_PATH_1)
     assert False
