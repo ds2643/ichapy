@@ -14,16 +14,13 @@ class Slide:
         self.bgr = cv2.imread(filename)
         self.gray = cv2.imread(filename, 0)
         self.DAB_MASK_VALUES = {
-            # TODO: move docstring out of dictionary?
-           '''
-            NOTE: these hsv values chosen through trial and error
-            hl -> hue lower bound
-            hh -> hue higher bound
-            sl -> saturation lower bound
-            sh -> saturation higher bound
-            vl -> volume lower bound
-            vh -> volume higher bound
-            '''
+            # NOTE: these hsv values chosen through trial and error
+            # hl -> hue lower bound
+            # hh -> hue higher bound
+            # sl -> saturation lower bound
+            # sh -> saturation higher bound
+            # vl -> volume lower bound
+            # vh -> volume higher bound
             "hl": 3,
             "hh": 20,
             "sl": 60,
@@ -31,16 +28,13 @@ class Slide:
             "vl": 25,
             "vh": 250}
         self.AP_MASK_VALUES = {
-            # TODO: move docstring out of dictionary?
-            '''
-            NOTE: these hsv values chosen through trial and error
-            hl -> hue lower bound
-            hh -> hue higher bound
-            sl -> saturation lower bound
-            sh -> saturation higher bound
-            vl -> volume lower bound
-            vh -> volume higher bound
-            '''
+            # NOTE: these hsv values chosen through trial and error
+            # hl -> hue lower bound
+            # hh -> hue higher bound
+            # sl -> saturation lower bound
+            # sh -> saturation higher bound
+            # vl -> volume lower bound
+            # vh -> volume higher bound
             "hl": 150,
             "hh": 185,
             "sl": 40,
@@ -49,7 +43,6 @@ class Slide:
             "vh": 240}
 
     def generate_mask(self, mask):
-        # TODO: must pass tests
         ''' returns a representation of the image thresholded for some specified hsv color range indicated by mask argument... mask is a dictionary containing entries for hue lower bound ("hl"), hue upper bound, saturation upper and lower bound, and volume upper and lower bound consistant with the desired threshold '''
         hsv = cv2.cvtColor(self.bgr, cv2.COLOR_BGR2HSV)
         assert(isinstance(mask, dict))
@@ -61,7 +54,7 @@ class Slide:
         upper_bound = np.array(hsv_upper_values, dtype=np.uint8)
         return cv2.inRange(hsv, lower_bound, upper_bound)
 
-    def extract_custom_pigment(self, mask):
+    def extract_pigment(self, mask):
         ''' returns matrix representation of image including only those pixels that fall in the color range specified by the mask HSV threshold specification '''
         assert(isinstance(mask, dict))
         assert("hl" in mask and "sl" in mask and "vl" in mask)
@@ -69,30 +62,12 @@ class Slide:
         custom_mask = self.generate_mask(mask)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = custom_mask)
 
-    # TODO: incorperate dab and ap into extract_custom_pigment generic... make more explicit in API that result is defined by chosen mask
-    def dab(self):
-        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for dab pigment... less general version of extract_custom_pigment method '''
-        dab_mask = self.generate_mask(self.DAB_MASK_VALUES)
-        return cv2.bitwise_and(self.bgr, self.bgr, mask = dab_mask)
-        # return self.extract_custom_pigment(self.DAB_MASK_VALUES)
-
-    def ap(self):
-        ''' returns matrix representation of image including exclusively those pixels that fall in the color range specified by the mask for ap pigment... less general version of extract_custom_pigment method '''
-        ap_mask = self.generate_mask(self.AP_MASK_VALUES)
-        return cv2.bitwise_and(self.bgr, self.bgr, mask = ap_mask)
-        # return self.extract_custom_pigment(self.AP_MASK_VALUES)
-
-    def dabPixelRaw(self):
-        ''' return integer count of pixels that fall in the threshold of the dab pigment '''
-        # TODO rename as count_dab_pixels
-        return cv2.countNonZero(self.generate_mask(self.DAB_MASK_VALUES))
-
-    def apPixelRaw(self):
-        ''' return integer count of pixels that fall in the threshold of the ap pigment '''
-        # TODO: rename as count_ap_pixels
-        return cv2.countNonZero(self.generate_mask(self.AP_MASK_VALUES))
+    def count_pixels(self, mask):
+        ''' generic method for integer count of pixels that fall into some specified region of the hsv colorspace '''
+        return cv2.countNonZero(self.generate_mask(mask))
 
     def background(self): # TODO fix erosion bounds
+        # TODO: salvage... how does this method work?
         kernel = np.ones((4,4),np.uint8)
         eroded =  cv2.erode(self.gray,kernel,iterations=2)
         ret, thresh = cv2.threshold(eroded, 200,255,cv2.THRESH_BINARY_INV)
