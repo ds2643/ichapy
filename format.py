@@ -1,4 +1,4 @@
-# simple script to help convert between image formats
+# simple script to help convert between image formats to PNG format non-destructively
 
 from PIL import Image
 import sys

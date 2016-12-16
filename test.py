@@ -1,8 +1,34 @@
 # automatically generated pytest template with ttpy 
 import imageprocessing as ip
+import csv_io as c
+import os
 
-TEST_IMAGE_PATH_0 = "data/test_data/test_img_0.png"
-TEST_IMAGE_PATH_1 = "data/test_data/test_img_1.png"
+sample_data = ["founded",1919,1960,1946]
+test_dir = "test_data/"
+sample_csv_file = test_dir + "nfl_sample_data.csv"
+output_file = test_dir + "sample_out.csv"
+TEST_IMAGE_PATH_0 = test_dir + "test_img_0.png" # three red dots
+TEST_IMAGE_PATH_1 = test_dir + "test_img_1.png" # black canvas
+
+def test_copy_csv_file():
+    ''' tests if copy_csv_file function produces output '''
+    c.copy_csv_file(sample_csv_file, output_file)
+    assert os.path.isfile(output_file)
+
+def test_read_col():
+    ''' tests read_col method from csv_io '''
+    sample_col = c.read_col(sample_csv_file,"team")
+    assert sample_col == ["team","bears","chargers","brown"]
+
+def test_add_col():
+    ''' tests functionality of adding column to existing csv file '''
+    c.add_col(output_file,sample_data)
+    assert c.read_col(output_file,"founded") == ["founded",1919,1960,1946]
+
+def test_replace_col():
+    c.add_col(output_file,["quarterback","","Mettenberger","McCown"])
+    c.replace_col(output_file,["quarterback","Leaf","Sanchez","Griffen"])
+    assert c.read_col(output_file,"quarterback") ==  ["quarterback","Leaf","Sanchez","Griffen"]
 
 def test_Slide__init__():
     ''' testing: __init__ method of Slide class: Calls any() method on resultant numpy ndarray, indicating if any of the elements of that matrix are truthy (i.e., is the matrix populated?) '''

@@ -1,10 +1,9 @@
 # main module of immunohistochemistry analysis tool
 
-import math
 import os
-import csv # TODO not in use; incorperate csv output functionality
 import sys
 import imageprocessing as ip
+import csv_io as c #TODO: qualify import
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
