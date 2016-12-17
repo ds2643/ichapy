@@ -96,23 +96,19 @@ class Slide:
             coordinates += [[contourX, contourY]]
         return coordinates
 
+    def signal_count(self, contours, min_area):
+        ''' number of contours with area greater or equal to some parameter '''
+        signal = []
+        for contour in contours:
+            if cv2.contourArea(contour) >= min_area:
+                signal.append(contour)
+        return len(signal)
+
+    def contour_radii(self, contours):
+        ''' list of radii associated with contour sets specified by parameter '''
+        return [math.sqrt(cv2.contourArea(contour)/math.pi) for contour in contours]
+
 '''
-    def areaNoise(self, minArea):
-        contours = self.contourData()[0]
-        lessThanMin = []
-        for contour in contours:
-            if cv2.contourArea(contour) <= minArea:
-                lessThanMin.append(contour)
-        return sum(lessThanMin)
-
-    def radii(self):
-        contours = self.contourData()[0]
-        radii = []
-        for contour in contours:
-            radius = math.sqrt(cv2.contourArea(contour)/math.pi)
-            radii.append(radius)
-        return radii
-
     def distanceInClass(geoCenters, radii):
         distances = []
         while (len(geoCenters) > 1):

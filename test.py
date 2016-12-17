@@ -85,15 +85,24 @@ def test_geometric_centers():
     coordinates = slide.geometric_centers(contours)
     assert coordinates
 
-'''
-def test_areaNoise():
-    # TODO: write test...
-    assert False
+def test_signal_count():
+    ''' one or more contours have a greater area than 100 pixels '''
+    slide = ip.Slide(TEST_IMAGE_PATH_0)
+    layer = slide.extract_pigment(TEST_MASK)
+    contours, img = slide.contour_data(layer)
+    MIN_AREA = 10
+    signal = slide.signal_count(contours, MIN_AREA)
+    assert signal > 0
 
 def test_radii():
-    # TODO: write test...
-    assert False
+    ''' contour_radii() method returns a populated list '''
+    slide = ip.Slide(TEST_IMAGE_PATH_0)
+    layer = slide.extract_pigment(TEST_MASK)
+    contours, img = slide.contour_data(layer)
+    radii = slide.contour_radii(contours)
+    assert radii
 
+'''
 def test_distanceInClass():
     # TODO: write test...
     assert False
