@@ -60,8 +60,6 @@ def test_count_pixels():
     observed_pixel_count = example_slide.count_pixels(TEST_MASK)
     return observed_pixel_count > 0
 
-# def test_background(): assert False
-
 def test_contour_data():
     ''' contour data not empty '''
     slide = ip.Slide(TEST_IMAGE_PATH_0)
@@ -102,8 +100,18 @@ def test_radii():
     radii = slide.contour_radii(contours)
     assert radii
 
+def test_distance():
+    ''' distances between contours sum to a value greater than zero '''
+    slide = ip.Slide(TEST_IMAGE_PATH_0)
+    layer = slide.extract_pigment(TEST_MASK)
+    contours, img = slide.contour_data(layer)
+    radii = slide.contour_radii(contours)
+    coordinates = slide.geometric_centers(contours)
+    distances = slide.distance(coordinates, radii)
+    assert sum(distances) > 0
+
 '''
-def test_distanceInClass():
+def test_background():
     # TODO: write test...
     assert False
 

@@ -66,13 +66,6 @@ class Slide:
         ''' generic method for integer count of pixels that fall into some specified region of the hsv colorspace '''
         return cv2.countNonZero(self.generate_mask(mask))
 
-    def background(self): # TODO fix erosion bounds
-        # TODO: salvage... how does this method work?
-        kernel = np.ones((4,4),np.uint8)
-        eroded =  cv2.erode(self.gray, kernel, iterations=2)
-        ret, thresh = cv2.threshold(eroded, 200,255,cv2.THRESH_BINARY_INV)
-        return cv2.bitwise_and(self.bgr, self.bgr, mask = thresh)
-
     def contour_data(self, layer, dilate = 2):
         ''' returns contour data for contigious objects in a layer '''
         default_gray = cv2.cvtColor(layer, cv2.COLOR_BGR2GRAY)
@@ -108,16 +101,25 @@ class Slide:
         ''' list of radii associated with contour sets specified by parameter '''
         return [math.sqrt(cv2.contourArea(contour)/math.pi) for contour in contours]
 
-'''
-    def distanceInClass(geoCenters, radii):
+    def distance(self, geometric_centers, radii):
+        ''' computes distance between contours based on geometric center, but compensates for area with radius approximation, which assumes contours are globular '''
+        # TODO: fix broken computation
         distances = []
-        while (len(geoCenters) > 1):
-            i = len(geoGenters)
-            x1, y1 = geoCenters.pop() # set x,y to the last element, discard
-            for x2,y2 in geoCenters:
-                hypot = math.sqrt((x2-x1)**2+(y2-y1)**2) #compute distance
+        while geometric_centers:
+            i = len(geometric_centers)
+            x1, y1 = geometric_centers.pop()
+            for x2, y2 in geometric_centers:
+                hypot = math.sqrt((x2-x1)**2+(y2-y1)**2)
                 distances.append(hypot-radii[i])
         return distances
+
+'''
+    def background(self): # TODO fix erosion bounds
+        # TODO: salvage... how does this method work?
+        kernel = np.ones((4,4),np.uint8)
+        eroded =  cv2.erode(self.gray, kernel, iterations=2)
+        ret, thresh = cv2.threshold(eroded, 200,255,cv2.THRESH_BINARY_INV)
+        return cv2.bitwise_and(self.bgr, self.bgr, mask = thresh)
 
 def colocalization(contoursA, contoursB, minDist): #proportion of distances between sets under some constant distance, assuming granular contour shape
     rawDistances = []
