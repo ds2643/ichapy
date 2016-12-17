@@ -5,15 +5,16 @@ An tool for analysis of immunohistochemical images that using Python bindings fo
 The contents of this repository reflect a subset of tools salvaged from prior use in research I contributed to in Cardiac Immunology. While that project has been deprecated, I hope to eventually repurpose this tool in a manner that is generalized in applicability, safe, and easy to use for anyone who is interested in learning more about medical image data.
 
 ## Tests
-**Automated tests are not yet implemented.**
-However, these instructions are to be followed once tests are available:
+Unit tests are included in the test.py file.
 
 `> pip install pytest # use the installation manager of your choosing`
 
-`> python -m pytest -v test.py`
+`> pytest test.py`
 
 ## Dataset
 A new, unrestricted dataset is now included ([source](https://imagej.nih.gov/ij/plugins/ihc-toolbox/index.html)). The dataset originally used to calibrate this program is not available for reasons relating to patient privacy.
 
-## Current State
-While this code is currently under-documented, incomplete, and packaged without tests, I hope to at some point in the future salvage the contents for open distribution. Please contact me by email if you are interested in such a tool.
+## Future
+- Interface ideas: data querying language, graphic user interface, command line interface
+- Fix distance method to slide class in image processing module
+- Misc custodial work (addressing several todos)
