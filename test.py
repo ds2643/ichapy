@@ -110,11 +110,14 @@ def test_distance():
     distances = slide.distance(coordinates, radii)
     assert sum(distances) > 0
 
-'''
 def test_background():
-    # TODO: write test...
-    assert False
+    ''' populated numpy matrix returned '''
+    example_slide = ip.Slide(TEST_IMAGE_PATH_0)
+    result = example_slide.background()
+    assert result.any()
 
+
+'''
 def test_colocalization():
     # TODO: write test...
     assert False

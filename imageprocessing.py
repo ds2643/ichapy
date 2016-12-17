@@ -113,14 +113,14 @@ class Slide:
                 distances.append(hypot-radii[i])
         return distances
 
-'''
-    def background(self): # TODO fix erosion bounds
-        # TODO: salvage... how does this method work?
-        kernel = np.ones((4,4),np.uint8)
-        eroded =  cv2.erode(self.gray, kernel, iterations=2)
-        ret, thresh = cv2.threshold(eroded, 200,255,cv2.THRESH_BINARY_INV)
+    def background(self):
+        ''' extract only uncolored background from image '''
+        kernel = np.ones((4,4), np.uint8)
+        eroded_img =  cv2.erode(self.gray, kernel, iterations=2)
+        ret, thresh = cv2.threshold(eroded_img, 200, 255, cv2.THRESH_BINARY_INV)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = thresh)
 
+'''
 def colocalization(contoursA, contoursB, minDist): #proportion of distances between sets under some constant distance, assuming granular contour shape
     rawDistances = []
     for x1,y1 in contoursA.geoCenters():
