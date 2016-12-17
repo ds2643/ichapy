@@ -70,16 +70,22 @@ def test_contour_data():
     assert contour_data
 
 def test_draw_contours():
-    '''  '''
-    # TODO: write test
-    # TODO: write docstring
-    assert False
+    ''' contour outline output of draw_contours method returns a populated array '''
+    slide = ip.Slide(TEST_IMAGE_PATH_0)
+    layer = slide.extract_pigment(TEST_MASK)
+    contours, img = slide.contour_data(layer)
+    drawn_contours = slide.draw_contours(contours, img)
+    assert drawn_contours.any()
+
+def test_geometric_centers():
+    ''' geometric centers method returns a populated list '''
+    slide = ip.Slide(TEST_IMAGE_PATH_0)
+    layer = slide.extract_pigment(TEST_MASK)
+    contours, img = slide.contour_data(layer)
+    coordinates = slide.geometric_centers(contours)
+    assert coordinates
 
 '''
-def test_geoCenters():
-    # TODO: write test...
-    assert False
-
 def test_areaNoise():
     # TODO: write test...
     assert False

@@ -79,18 +79,15 @@ class Slide:
         kernel = np.ones((dilate, dilate),np.uint8)
         dilated_gray = cv2.dilate(default_gray, kernel, iterations=2)
         ret, thresh = cv2.threshold(dilated_gray, 1, 255, cv2.THRESH_BINARY)
-        image, contours_data, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-        return contours_data, image
+        image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        return contours, image
 
-    def draw_contours(self, contours_data, image):
-        ''' returns data representation of contours drawn '''
-        return cv2.drawContours(image, contours_data, -1, (150,150,150), 3)
+    def draw_contours(self, contours, image):
+        ''' returns contour outlines from an image of regions of interest '''
+        return cv2.drawContours(image, contours, -1, (150,150,150), 3)
 
-'''
-# TODO contract into class as init
-
-    def geoCenters(self):
-        contours = self.contourData()[0]
+    def geometric_centers(self, contours):
+        ''' returns an array with the geometric centers of argument contours '''
         coordinates = []
         for contour in contours:
             moments = cv2.moments(contour)
@@ -99,6 +96,7 @@ class Slide:
             coordinates += [[contourX, contourY]]
         return coordinates
 
+'''
     def areaNoise(self, minArea):
         contours = self.contourData()[0]
         lessThanMin = []
