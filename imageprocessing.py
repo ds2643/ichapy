@@ -119,25 +119,3 @@ class Slide:
         eroded_img =  cv2.erode(self.gray, kernel, iterations=2)
         ret, thresh = cv2.threshold(eroded_img, 200, 255, cv2.THRESH_BINARY_INV)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = thresh)
-
-'''
-def colocalization(contoursA, contoursB, minDist): #proportion of distances between sets under some constant distance, assuming granular contour shape
-    rawDistances = []
-    for x1,y1 in contoursA.geoCenters():
-        for x2, y2 in contoursB.geocenters():
-            rawDistances.append(math.sqrt((x2-x1)**2+(y2-y1)**2))
-        areaCorrection = []
-    for radiusA in contoursA.radii():
-        for radiusB in contoursB.radii():
-            correction = radiusA + radiusB
-            areaCorrection.append(correction)
-    correctedDistances = []
-    for i in len(rawDistances):
-        correctedDistance = rawDistance[i]-areaCorrection[i]
-        correctedDistances.append(correctedDistance)
-    underMin = 0
-    for correctedDistance in correctedDistances:
-        if correctedDistance < minDist:
-            underMin = underMin + 1
-    return underMin/len(correctedDistance)
-'''

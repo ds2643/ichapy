@@ -115,10 +115,3 @@ def test_background():
     example_slide = ip.Slide(TEST_IMAGE_PATH_0)
     result = example_slide.background()
     assert result.any()
-
-
-'''
-def test_colocalization():
-    # TODO: write test...
-    assert False
-'''
