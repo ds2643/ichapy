@@ -1,4 +1,4 @@
-# automatically generated pytest template with ttpy 
+# automatically generated pytest template with ttpy
 import imageprocessing as ip
 import csv_io as c
 import os
@@ -9,6 +9,13 @@ sample_csv_file = test_dir + "nfl_sample_data.csv"
 output_file = test_dir + "sample_out.csv"
 TEST_IMAGE_PATH_0 = test_dir + "test_img_0.png" # three red dots
 TEST_IMAGE_PATH_1 = test_dir + "test_img_1.png" # black canvas
+TEST_MASK = {
+            "hl": 0,
+            "hh": 255,
+            "sl": 50,
+            "sh": 255,
+            "vl": 50,
+            "vh": 255}
 
 def test_copy_csv_file():
     ''' tests if copy_csv_file function produces output '''
@@ -37,60 +44,38 @@ def test_Slide__init__():
 
 def test_generate_mask():
     ''' testing: given the appropriate HSV bounds, generate_mask produces a mask for which some values are not null '''
-    red_mask = {
-            "hl": 0,
-            "hh": 255,
-            "sl": 50,
-            "sh": 255,
-            "vl": 50,
-            "vh": 255}
     example_slide = ip.Slide(TEST_IMAGE_PATH_0)
-    result = example_slide.generate_mask(red_mask)
+    result = example_slide.generate_mask(TEST_MASK)
     assert result.any()
 
 def test_extract_pigment():
     ''' testing: extract_custom_pigment (in place of dab and ap methods, which use the same logic, but use default arguments)... resultant filtered image for custom pigment  '''
     example_slide = ip.Slide(TEST_IMAGE_PATH_0)
-    red_mask = {
-            "hl": 0,
-            "hh": 255,
-            "sl": 50,
-            "sh": 255,
-            "vl": 50,
-            "vh": 255} # TODO: test using more conservative mask
-    result = example_slide.extract_pigment(red_mask)
+    result = example_slide.extract_pigment(TEST_MASK)
     assert result.any() # TODO: test more rigiously (e.g., # pixels in range)
 
 def test_count_pixels():
     ''' count pixels filtered when using some mask '''
     example_slide = ip.Slide(TEST_IMAGE_PATH_0)
-    # TODO: write test
-    red_mask = {
-        "hl": 0,
-        "hh": 255,
-        "sl": 50,
-        "sh": 255,
-        "vl": 50,
-        "vh": 255} # TODO: test using more conservative mask
-    observed_pixel_count = example_slide.count_pixels(red_mask)
+    observed_pixel_count = example_slide.count_pixels(TEST_MASK)
     return observed_pixel_count > 0
 
-# TODO: complete the following after refactoring is complete
+# def test_background(): assert False
+
+def test_contour_data():
+    ''' contour data not empty '''
+    slide = ip.Slide(TEST_IMAGE_PATH_0)
+    layer = slide.extract_pigment(TEST_MASK)
+    contour_data, img = slide.contour_data(layer)
+    assert contour_data
+
+def test_draw_contours():
+    '''  '''
+    # TODO: write test
+    # TODO: write docstring
+    assert False
 
 '''
-def test_background():
-    # TODO: write test...
-    example_slide = ip.Slide(TEST_IMAGE_PATH_1)
-    assert False
-
-def test___init__():
-    # TODO: write test...
-    assert False
-
-def test_contourData():
-    # TODO: write test...
-    assert False
-
 def test_geoCenters():
     # TODO: write test...
     assert False

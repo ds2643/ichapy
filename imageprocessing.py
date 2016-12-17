@@ -69,24 +69,25 @@ class Slide:
     def background(self): # TODO fix erosion bounds
         # TODO: salvage... how does this method work?
         kernel = np.ones((4,4),np.uint8)
-        eroded =  cv2.erode(self.gray,kernel,iterations=2)
+        eroded =  cv2.erode(self.gray, kernel, iterations=2)
         ret, thresh = cv2.threshold(eroded, 200,255,cv2.THRESH_BINARY_INV)
         return cv2.bitwise_and(self.bgr, self.bgr, mask = thresh)
 
-class Contour:
+    def contour_data(self, layer, dilate = 2):
+        ''' returns contour data for contigious objects in a layer '''
+        default_gray = cv2.cvtColor(layer, cv2.COLOR_BGR2GRAY)
+        kernel = np.ones((dilate, dilate),np.uint8)
+        dilated_gray = cv2.dilate(default_gray, kernel, iterations=2)
+        ret, thresh = cv2.threshold(dilated_gray, 1, 255, cv2.THRESH_BINARY)
+        image, contours_data, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        return contours_data, image
 
-    def __init__(self, layer):
-        self.layer = layer
-        self.bgr= cv2.imread(filename)
+    def draw_contours(self, contours_data, image):
+        ''' returns data representation of contours drawn '''
+        return cv2.drawContours(image, contours_data, -1, (150,150,150), 3)
 
-    def contourData(self, dilate = 2): # contract into class as init
-        gray = cv2.cvtColor(self.layer, cv2.COLOR_BGR2GRAY)
-        kernel = np.ones((dilate,dilate),np.uint8)
-        dilatedGray = cv2.dilate(gray,kernel,iterations=2)
-        ret, thresh = cv2.threshold(dilatedGray, 1,255,cv2.THRESH_BINARY)
-        image, contoursData, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
-        drawn = cv2.drawContours(image,contoursData,-1,(150,150,150),3)
-        return contoursData, drawn
+'''
+# TODO contract into class as init
 
     def geoCenters(self):
         contours = self.contourData()[0]
@@ -143,3 +144,4 @@ def colocalization(contoursA, contoursB, minDist): #proportion of distances betw
         if correctedDistance < minDist:
             underMin = underMin + 1
     return underMin/len(correctedDistance)
+'''
